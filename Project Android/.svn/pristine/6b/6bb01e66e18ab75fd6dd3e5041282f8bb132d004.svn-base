@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">GroupProject</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_sudoku_main">SudokuMainActivity</string>
+    <string name="title_activity_sudoku_play">SudokuPlayActivity</string>
+    <drawable name="cl_gold">#FFFF99</drawable>
+    <drawable name="bg_grid">@drawable/grid</drawable>
+    <drawable name="bg_border">@drawable/border</drawable>
+
+</resources>
