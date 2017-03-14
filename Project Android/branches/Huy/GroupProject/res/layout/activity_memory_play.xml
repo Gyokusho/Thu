@@ -1,0 +1,95 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context="com.example.project.MemoryPlayActivity" >
+
+    <LinearLayout
+        android:id="@+id/parentGridLayout"
+        android:layout_width="300dp"
+        android:layout_height="fill_parent"
+        android:layout_marginRight="10dp"
+        android:gravity="center" >
+
+        <GridLayout
+            android:id="@+id/memoryGameLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:columnCount="3"
+            android:rowCount="4" >
+        </GridLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/gameInfoLayout"
+        android:layout_width="180dp"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" >
+
+        <TextView
+            android:id="@+id/txtGameName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="MEMORY GAME"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtTitleLevel"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Level"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/txtLevel"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="Easy"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/txtTitleTurn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Number of Turns"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/txtTurn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="0 turns"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+        
+        <Button 
+             android:id="@+id/btnHowPlay"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="How to Play"
+            android:onClick="clickHowToPlay"
+            android:layout_marginTop="15dp"/>
+        
+        <Button 
+             android:id="@+id/btnNewGame"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="New Game"
+            android:onClick="clickToNewGame"/>
+    </LinearLayout>
+
+</LinearLayout>
