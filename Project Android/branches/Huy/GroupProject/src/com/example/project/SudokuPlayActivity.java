@@ -1,29 +1,19 @@
 package com.example.project;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
-import javax.net.ssl.SSLSocketFactory;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.SingleClientConnManager;
-import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.example.utils.RequestServer;
 import com.example.utils.RequestServer.RequestResult;
 
 import android.app.Activity;
-import android.os.AsyncTask;
+import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -50,16 +40,24 @@ public class SudokuPlayActivity extends Activity implements RequestResult {
 
 		@Override
 		public void onClick(View v) {			
-			if (currentX != -1 && currentY != -1) {
-				cells[currentX][currentY].setBackgroundResource(0);
+						
+			if (q[row][col] == 0) {
+				if (currentX != -1 && currentY != -1) {
+					cells[currentX][currentY].setBackgroundResource(0);
+				}
+				cells[row][col].setBackgroundResource(R.drawable.border);
+				currentX = row;
+				currentY = col;
+			} else {
+				currentX = -1;
+				currentY = -1;
 			}
 			
-			cells[row][col].setBackgroundResource(R.drawable.border);
 			
-			currentX = row;
-			currentY = col;
+			
 		}
 	}
+	
 	
 	private class ButtonNumberClickListener implements View.OnClickListener {
 
@@ -80,7 +78,9 @@ public class SudokuPlayActivity extends Activity implements RequestResult {
 	}
 	
 	RequestServer rs;
-	int[][] question = new int[10][10];
+	ProgressDialog pdial;
+	boolean isPlaying = false;
+	int[][] q = new int[10][10];
 	TextView[][] cells = new TextView[10][10];
 	TextView txtName;
 	AbsoluteLayout tbl;
@@ -103,20 +103,30 @@ public class SudokuPlayActivity extends Activity implements RequestResult {
 		grid = (ImageView) findViewById(R.id.grid);
 		tbl = (AbsoluteLayout)  findViewById(R.id.table);								
 		setUpView();
-		setUpQuestion();			
+		if (!isPlaying) {
+			setUpQuestion();
+			isPlaying = true;
+		}
+					
 	}
 	
 	private void setUpQuestion() {
 		 for (int i = 1; i <= 9; i++) {
 			 for (int j = 1; j <= 9; j++) {
-				 question[i][j] = 0;
-				 cells[i][j].setText("");
+				 q[i][j] = 0;
+				 cells[i][j].setText("");				 				 
 			 }
 		 }
 		
-		 makeQuery("", "http://192.168.1.5:8084/Android/SudokuServlet");
+		 Map<String, String> query = new HashMap<String, String>();
+		 query.put("action", "GetQuestion");
+		 query.put("level", "1");
+		 makeQuery(query, "SudokuServlet");
+		 
+		 
 	}
 
+	
 	private void setUpView() {
 		WIDTH = grid.getLayoutParams().width / 9 + 1;
 		HEIGHT = grid.getLayoutParams().height / 9 ;
@@ -175,14 +185,50 @@ public class SudokuPlayActivity extends Activity implements RequestResult {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	private void makeQuery(String query, String url){
-        rs = new RequestServer();
+	private void makeQuery(Map<String, String> query, String path){
+        pdial = new ProgressDialog(this);
+        pdial.setMessage("Loading...");
+        pdial.setTitle("Download Sudoku Question from Server");
+        pdial.show();
+		
+		rs = new RequestServer();
         rs.delegate = this;
-        rs.execute(query, url);
+        rs.execute(query, path);               
     }
 
 	@Override
-	public void processFinish(String result) {
-		Toast.makeText(this, result, Toast.LENGTH_LONG).show();		
+	public void processFinish(String result) {		
+		try {
+			JSONObject jsonObj = new JSONObject(result);
+			
+			JSONArray q = jsonObj.getJSONArray("q");
+			
+			for (int i = 0; i < q.length(); i++) {
+				JSONArray row = q.getJSONArray(i);
+				for (int j = 0; j < row.length(); j++) {
+					int num = row.getInt(j);
+					this.q[i][j] = num;
+					if (num != 0) {
+						this.cells[i][j].setText("" + num);
+					} else {
+						if (i > 0 && j > 0) {
+							
+							this.cells[i][j].setTextColor(0x00008B);		
+							this.cells[i][j].setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
+						}
+							
+					}
+				}
+			}
+			
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();	
+		}
+		
+		pdial.dismiss();
+			
 	}
+
 }

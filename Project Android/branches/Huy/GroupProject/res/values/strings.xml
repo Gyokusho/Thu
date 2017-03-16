@@ -13,5 +13,6 @@
 
     <string name="title_activity_memory_main">MemoryMainActivity</string>
     <string name="title_activity_memory_play">MemoryPlayActivity</string>
+    <color name="darkblue">#00008B</color>
 
 </resources>

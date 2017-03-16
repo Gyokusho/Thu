@@ -1,8 +1,11 @@
 package com.example.utils;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -17,16 +20,21 @@ import org.apache.http.message.BasicNameValuePair;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class RequestServer extends AsyncTask<String, Void, String> {
+public class RequestServer extends AsyncTask<Object, Void, String> {
 
 	public RequestResult delegate = null;
 
     @Override
-    protected String doInBackground(String... params) {
+    protected String doInBackground(Object... params) {
 
-        Log.d("huyleonis", params[0]);
-        return postData(params[0], params[1]);
+    	Map<String, String> q = (Map<String, String>) params[0];
+    	
+    	String path = (String) params[1];
+    	
+        Log.d("huyleonis", path);
+        return postData(q, path);
     }
+        
 
     @Override
     protected void onPostExecute(String s) {
@@ -35,23 +43,37 @@ public class RequestServer extends AsyncTask<String, Void, String> {
         delegate.processFinish(s);
     }
 
-    private String postData(String toPost, String url) {
+    private String postData(Map<String, String> params, String path) {
         // Create a new HttpClient and Post Header
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost(url);
-        //This is the data to send
-        String query = toPost; //any data to send
+        HttpPost httppost = new HttpPost("http://192.168.1.5:8084/Android/" + path);
+        
+        
+        List<NameValuePair> postParams = new ArrayList<NameValuePair>();
+        if (params != null) {
+        	
+            for (Entry<String, String> entry : params.entrySet()) {
+            	String name = entry.getKey();
+            	String value;
+				try {
+					value = new String(entry.getValue().getBytes("UTF-8"), "UTF-8");
+					postParams.add(new BasicNameValuePair(name, value));
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}            	
+            	            	
+            	
+    		}
+        }
 
         try {
             // Add your data
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-            byte[] utf8 = query.getBytes("UTF-8");
-            query = new String(utf8, "UTF-8");
-            nameValuePairs.add(new BasicNameValuePair("query", query));
+            
 
             //httppost.setEntity(new StringEntity(query, HTTP.UTF_8));
 
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
+            httppost.setEntity(new UrlEncodedFormEntity(postParams, "UTF-8"));
 
 
             // Execute HTTP Post Request
@@ -71,7 +93,7 @@ public class RequestServer extends AsyncTask<String, Void, String> {
         }        
     }
 
-    public interface RequestResult {
+    public interface RequestResult {    	
         void processFinish(String result);
     }
 
