@@ -43,7 +43,8 @@
         android:layout_x="480dp"
         android:layout_y="129dp"
         android:text="New Game"
-        android:textSize="14dp" />
+        android:textSize="14dp" 
+        android:onClick="newGame" />
 
     <Button
         android:id="@+id/button10"
@@ -90,15 +91,6 @@
             android:layout_height="wrap_content"
             android:text="9" />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_x="493dp"
-        android:layout_y="80dp"
-        android:text="00 : 00"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <LinearLayout
         android:id="@+id/layoutBtn1"
@@ -166,5 +158,15 @@
         android:layout_x="26dp"
         android:layout_y="44dp" >
     </AbsoluteLayout>
+
+    <TextView
+        android:id="@+id/sudokuPlay_txtTurn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="478dp"
+        android:layout_y="88dp"
+        android:text="Turns:"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="16dp" />
 
 </AbsoluteLayout>

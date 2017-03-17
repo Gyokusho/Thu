@@ -12,7 +12,10 @@ import com.example.utils.RequestServer;
 import com.example.utils.RequestServer.RequestResult;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -28,6 +31,30 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class SudokuPlayActivity extends Activity implements RequestResult {
+	
+	RequestServer rs;	
+	int cl_darkblue = Color.parseColor("#1818df");
+	int cl_redpink = Color.parseColor("#ff4c4c");
+	
+	ProgressDialog pdial;
+	boolean isPlaying = false;
+	int[][] q = new int[10][10];	
+	TextView[][] cells = new TextView[10][10];
+	TextView txtName;
+	TextView txtTurn;
+	AbsoluteLayout tbl;
+	int currentX = -1;
+	int currentY = -1;
+	float top;
+	float left;
+	int level;
+	int turn;
+	
+	private int WIDTH;
+	private int HEIGHT;
+	private AbsoluteLayout layout;
+	private ImageView grid;	
+	
 
 	private class CellClickListener implements View.OnClickListener {
 		private int row;
@@ -48,17 +75,10 @@ public class SudokuPlayActivity extends Activity implements RequestResult {
 				cells[row][col].setBackgroundResource(R.drawable.border);
 				currentX = row;
 				currentY = col;
-			} else {
-				currentX = -1;
-				currentY = -1;
-			}
-			
-			
-			
+			}									
 		}
 	}
-	
-	
+		
 	private class ButtonNumberClickListener implements View.OnClickListener {
 
 		private int number;
@@ -69,30 +89,109 @@ public class SudokuPlayActivity extends Activity implements RequestResult {
 		
 		@Override
 		public void onClick(View v) {
-			if (currentX != -1 && currentY != -1) {
-				cells[currentX][currentY].setText("" +  number);
-			}
+
 			
+			if (currentX != -1 && currentY != -1) {
+				
+				turn++;
+				
+				txtTurn.setText("" + turn);
+				
+				cells[currentX][currentY].setText("" +  number);
+				cells[currentX][currentY].setTextColor(cl_darkblue);
+				checkDuplicate();				
+				if (isWin()) {
+					finishGame();
+				}
+			}
+						
 		}
 		
+		private boolean checkDuplicate() {
+			
+			boolean isDuplicated = false;
+			
+			for (int i = 1; i <= 9; i++) {
+				int num_same_col = Integer.parseInt("0" + cells[currentX][i].getText().toString());
+				int num_same_row = Integer.parseInt("0" + cells[i][currentY].getText().toString());
+				
+				if (i != currentY) {
+					if (num_same_col == this.number) {
+						isDuplicated = true;
+						cells[currentX][i].setTextColor(cl_redpink);
+						cells[currentX][currentY].setTextColor(cl_redpink);
+					} else {					
+						cells[currentX][i].setTextColor((q[currentX][i] == 0)?cl_darkblue:Color.DKGRAY);
+					}
+				}
+				
+				if (i != currentX) {
+					if (num_same_row == this.number) {
+						isDuplicated = true;
+						cells[i][currentY].setTextColor(cl_redpink);
+						cells[currentX][currentY].setTextColor(cl_redpink);
+					} else {					
+						cells[i][currentY].setTextColor((q[i][currentY] == 0)?cl_darkblue:Color.DKGRAY);
+					}
+				}				
+			}
+			
+			return isDuplicated;
+		}
+		
+		private boolean isWin() {
+			boolean isWin = true;									
+					
+			for (int i=1 ; i <= 9; i++) {
+				for (int j=1; j<=9; j++) {
+					 String cell = cells[i][j].getText().toString().trim();
+					 if (cell.isEmpty()) {
+						 isWin = false;						 						 
+					 } else {
+						 
+						 for (int k = 1; k <= 9; k++) {							 
+							 if (k != j && cells[i][k].getText().toString().trim().equals(cell)) {
+								 isWin = false;	
+							 }
+							 
+							 if (k != i && cells[k][j].getText().toString().trim().equals(cell)) {
+								 isWin = false;
+							 }
+						 }
+						 
+					 }
+				}
+			}
+									
+			return isWin;
+		}
+	
+		private void finishGame() {							
+			
+			
+			AlertDialog alert = new AlertDialog.Builder(SudokuPlayActivity.this)
+				.setTitle("Congratulation!")
+				.setMessage("You solve the Sudoku after " + turn + " moves")
+				.setPositiveButton("New Game", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						setUpQuestion();
+					}
+				}).setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						//finishActivity();
+						SudokuPlayActivity.this.finish();
+					}
+				})
+				.create();
+			alert.show();
+		}
 	}
-	
-	RequestServer rs;
-	ProgressDialog pdial;
-	boolean isPlaying = false;
-	int[][] q = new int[10][10];
-	TextView[][] cells = new TextView[10][10];
-	TextView txtName;
-	AbsoluteLayout tbl;
-	int currentX = -1;
-	int currentY = -1;
-	float top;
-	float left;
-	
-	private int WIDTH;
-	private int HEIGHT;
-	private AbsoluteLayout layout;
-	private ImageView grid;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -100,8 +199,14 @@ public class SudokuPlayActivity extends Activity implements RequestResult {
 		setContentView(R.layout.activity_sudoku_play);
 		
 		txtName = (TextView) findViewById(R.id.txtName);
+		txtTurn = (TextView) findViewById(R.id.sudokuPlay_txtTurn);
 		grid = (ImageView) findViewById(R.id.grid);
-		tbl = (AbsoluteLayout)  findViewById(R.id.table);								
+		tbl = (AbsoluteLayout)  findViewById(R.id.table);
+		
+		Bundle bundle = getIntent().getBundleExtra("bundle");
+		txtName.setText(bundle.getString("name"));
+		level = bundle.getInt("level");
+		
 		setUpView();
 		if (!isPlaying) {
 			setUpQuestion();
@@ -110,7 +215,15 @@ public class SudokuPlayActivity extends Activity implements RequestResult {
 					
 	}
 	
+	private void finishActivity() {
+		this.finish();
+	}
+	
 	private void setUpQuestion() {
+		turn = 0;
+		
+		txtTurn.setText("" + turn);
+		
 		 for (int i = 1; i <= 9; i++) {
 			 for (int j = 1; j <= 9; j++) {
 				 q[i][j] = 0;
@@ -120,12 +233,9 @@ public class SudokuPlayActivity extends Activity implements RequestResult {
 		
 		 Map<String, String> query = new HashMap<String, String>();
 		 query.put("action", "GetQuestion");
-		 query.put("level", "1");
-		 makeQuery(query, "SudokuServlet");
-		 
-		 
+		 query.put("level", "" + level);
+		 makeQuery(query, "SudokuServlet");		 		 		 		 
 	}
-
 	
 	private void setUpView() {
 		WIDTH = grid.getLayoutParams().width / 9 + 1;
@@ -141,7 +251,8 @@ public class SudokuPlayActivity extends Activity implements RequestResult {
 				txt.setGravity(android.view.Gravity.CENTER);
 				
 				txt.setTranslationX(WIDTH*(j-1));								
-				txt.setTranslationY(HEIGHT*(i-1));				
+				txt.setTranslationY(HEIGHT*(i-1));			
+				//txt.setTextColor(Color.DKGRAY);
 				
 				//txt.setBackgroundColor(R.drawable.cl_gold);
 				txt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);										
@@ -188,7 +299,7 @@ public class SudokuPlayActivity extends Activity implements RequestResult {
 	private void makeQuery(Map<String, String> query, String path){
         pdial = new ProgressDialog(this);
         pdial.setMessage("Loading...");
-        pdial.setTitle("Download Sudoku Question from Server");
+        pdial.setTitle("Get Sudoku Question");
         pdial.show();
 		
 		rs = new RequestServer();
@@ -210,10 +321,11 @@ public class SudokuPlayActivity extends Activity implements RequestResult {
 					this.q[i][j] = num;
 					if (num != 0) {
 						this.cells[i][j].setText("" + num);
+						this.cells[i][j].setTextColor(Color.DKGRAY);						
 					} else {
 						if (i > 0 && j > 0) {
 							
-							this.cells[i][j].setTextColor(0x00008B);		
+							this.cells[i][j].setTextColor(cl_darkblue);		
 							this.cells[i][j].setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
 						}
 							
@@ -225,10 +337,15 @@ public class SudokuPlayActivity extends Activity implements RequestResult {
 		} catch (JSONException e) {
 			e.printStackTrace();
 			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();	
+			Toast.makeText(this, result, Toast.LENGTH_LONG).show();
 		}
 		
-		pdial.dismiss();
-			
+		pdial.dismiss();			
+	}
+	
+	public void newGame(View v) {
+		//setUpView();
+		setUpQuestion();
 	}
 
 }

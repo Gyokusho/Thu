@@ -46,7 +46,7 @@ public class RequestServer extends AsyncTask<Object, Void, String> {
     private String postData(Map<String, String> params, String path) {
         // Create a new HttpClient and Post Header
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost("http://192.168.1.5:8084/Android/" + path);
+        HttpPost httppost = new HttpPost("http://prm391.azurewebsites.net/Android/" + path);
         
         
         List<NameValuePair> postParams = new ArrayList<NameValuePair>();

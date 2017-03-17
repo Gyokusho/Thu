@@ -1,18 +1,28 @@
 package com.example.project;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 public class SudokuMainActivity extends Activity {
 
+	private SeekBar sbLevel;
+	private TextView txtName;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sudoku_main);
+	
+		txtName = (TextView) findViewById(R.id.sudokuMain_txtName);
+		sbLevel = (SeekBar) findViewById(R.id.sbLevel);
+		sbLevel.setMax(2);				
 	}
 
 	@Override
@@ -35,7 +45,21 @@ public class SudokuMainActivity extends Activity {
 	}
 	
 	public void playSudoku(View v) {
-		Intent i = new Intent(this, SudokuPlayActivity.class);
-		startActivity(i);
+		String name = txtName.getText().toString().trim();
+		
+		if (name.isEmpty()) {
+			new AlertDialog.Builder(this).setTitle("Please input your name").create().show();
+		} else {
+			Bundle b = new Bundle();
+			b.putInt("level", sbLevel.getProgress() + 1);
+			b.putString("name", name);
+			
+			Intent i = new Intent(this, SudokuPlayActivity.class);
+			i.putExtra("bundle", b);
+			startActivity(i);
+		}
+		
+		
+		
 	}
 }

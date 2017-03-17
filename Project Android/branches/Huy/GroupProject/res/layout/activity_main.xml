@@ -1,4 +1,4 @@
-<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/playView"
     android:layout_width="match_parent"
@@ -11,39 +11,37 @@
     tools:context="com.example.project.MainActivity" >
 
     <Button
-        android:id="@+id/Button02"
-        android:layout_width="189dp"
-        android:layout_height="56dp"
-        android:layout_x="164dp"
-        android:layout_y="227dp"
-        android:text="Words" />
-
-    <Button
         android:id="@+id/button1"
         android:layout_width="189dp"
         android:layout_height="56dp"
-        android:layout_x="28dp"
-        android:layout_y="142dp"
-        android:text="Sudoku" 
-        android:onClick="chooseSudoku"/>
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/sudokuPlay_txtTurn"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="78dp"
+        android:onClick="chooseSudoku"
+        android:text="Sudoku" />
 
     <Button
         android:id="@+id/Button01"
         android:layout_width="189dp"
         android:layout_height="56dp"
-        android:layout_x="306dp"
-        android:layout_y="140dp"
-        android:text="Memory"
-        android:onClick="chooseMemory" />
+        android:layout_alignBaseline="@+id/button1"
+        android:layout_alignBottom="@+id/button1"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="42dp"
+        android:onClick="chooseMemory"
+        android:text="Memory" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/sudokuPlay_txtTurn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_x="160dp"
-        android:layout_y="60dp"
+        android:layout_alignLeft="@+id/button1"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="153dp"
+        android:layout_marginTop="80dp"
         android:text="GAME CENTER"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="32dp" />
 
-</AbsoluteLayout>
+</RelativeLayout>

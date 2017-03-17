@@ -10,9 +10,6 @@ package com.example.project;
 public final class R {
     public static final class attr {
     }
-    public static final class color {
-        public static final int darkblue=0x7f060000;
-    }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
 
@@ -30,6 +27,8 @@ public final class R {
         public static final int bg_grid=0x7f020019;
         public static final int border=0x7f020001;
         public static final int cl_gold=0x7f020018;
+        public static final int darkblue=0x7f02001b;
+        public static final int grey=0x7f02001e;
         public static final int grid=0x7f020002;
         public static final int ic_background=0x7f020003;
         public static final int ic_launcher=0x7f020004;
@@ -52,44 +51,45 @@ public final class R {
         public static final int item8=0x7f020015;
         public static final int item9=0x7f020016;
         public static final int question=0x7f020017;
+        public static final int redpink=0x7f02001c;
+        public static final int white=0x7f02001d;
     }
     public static final class id {
-        public static final int Button01=0x7f090003;
-        public static final int Button02=0x7f090001;
-        public static final int action_settings=0x7f090023;
-        public static final int btnHard=0x7f090006;
-        public static final int btnHowPlay=0x7f09000f;
-        public static final int btnMedium=0x7f090005;
-        public static final int btnNewGame=0x7f090010;
-        public static final int button1=0x7f090002;
-        public static final int button10=0x7f090016;
-        public static final int button2=0x7f09001d;
-        public static final int button3=0x7f09001e;
-        public static final int button4=0x7f09001f;
-        public static final int button5=0x7f090020;
-        public static final int button6=0x7f090018;
-        public static final int button7=0x7f090019;
-        public static final int button8=0x7f09001a;
-        public static final int button9=0x7f09001b;
-        public static final int editText1=0x7f090013;
-        public static final int gameInfoLayout=0x7f090009;
-        public static final int grid=0x7f090014;
-        public static final int imageButton1=0x7f090015;
-        public static final int layoutBtn1=0x7f09001c;
-        public static final int layoutBtn2=0x7f090017;
-        public static final int memoryGameLayout=0x7f090008;
-        public static final int parentGridLayout=0x7f090007;
-        public static final int playView=0x7f090000;
-        public static final int sbLevel=0x7f090011;
-        public static final int table=0x7f090022;
-        public static final int textView1=0x7f090004;
-        public static final int textView2=0x7f090012;
-        public static final int txtGameName=0x7f09000a;
-        public static final int txtLevel=0x7f09000c;
-        public static final int txtName=0x7f090021;
-        public static final int txtTitleLevel=0x7f09000b;
-        public static final int txtTitleTurn=0x7f09000d;
-        public static final int txtTurn=0x7f09000e;
+        public static final int Button01=0x7f080003;
+        public static final int action_settings=0x7f080022;
+        public static final int btnHard=0x7f080005;
+        public static final int btnHowPlay=0x7f08000e;
+        public static final int btnMedium=0x7f080004;
+        public static final int btnNewGame=0x7f08000f;
+        public static final int button1=0x7f080001;
+        public static final int button10=0x7f080015;
+        public static final int button2=0x7f08001c;
+        public static final int button3=0x7f08001d;
+        public static final int button4=0x7f08001e;
+        public static final int button5=0x7f08001f;
+        public static final int button6=0x7f080017;
+        public static final int button7=0x7f080018;
+        public static final int button8=0x7f080019;
+        public static final int button9=0x7f08001a;
+        public static final int gameInfoLayout=0x7f080008;
+        public static final int grid=0x7f080013;
+        public static final int imageButton1=0x7f080014;
+        public static final int layoutBtn1=0x7f08001b;
+        public static final int layoutBtn2=0x7f080016;
+        public static final int memoryGameLayout=0x7f080007;
+        public static final int parentGridLayout=0x7f080006;
+        public static final int playView=0x7f080000;
+        public static final int sbLevel=0x7f080010;
+        public static final int sudokuMain_txtName=0x7f080012;
+        public static final int sudokuPlay_txtTurn=0x7f080002;
+        public static final int table=0x7f080021;
+        public static final int textView2=0x7f080011;
+        public static final int txtGameName=0x7f080009;
+        public static final int txtLevel=0x7f08000b;
+        public static final int txtName=0x7f080020;
+        public static final int txtTitleLevel=0x7f08000a;
+        public static final int txtTitleTurn=0x7f08000c;
+        public static final int txtTurn=0x7f08000d;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -99,11 +99,11 @@ public final class R {
         public static final int activity_sudoku_play=0x7f030004;
     }
     public static final class menu {
-        public static final int main=0x7f080000;
-        public static final int memory_main=0x7f080001;
-        public static final int memory_play=0x7f080002;
-        public static final int sudoku_main=0x7f080003;
-        public static final int sudoku_play=0x7f080004;
+        public static final int main=0x7f070000;
+        public static final int memory_main=0x7f070001;
+        public static final int memory_play=0x7f070002;
+        public static final int sudoku_main=0x7f070003;
+        public static final int sudoku_play=0x7f070004;
     }
     public static final class string {
         public static final int action_settings=0x7f050002;
@@ -136,10 +136,10 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f070000;
+        public static final int AppBaseTheme=0x7f060000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f070001;
+        public static final int AppTheme=0x7f060001;
     }
 }

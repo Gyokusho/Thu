@@ -10,7 +10,7 @@
     tools:context="com.example.project.SudokuMainActivity" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/sudokuPlay_txtTurn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_x="200dp"
@@ -54,7 +54,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/sudokuMain_txtName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_x="229dp"
